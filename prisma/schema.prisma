@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int     @id @default(autoincrement())
+  email          String  @unique
+  phone          String?
+  family_name    String
+  given_name     String
+  picture        String?
+  name           String?
+  password       String
+  verified_email Boolean @default(false)
+  cart           Cart?
+}
+
+model MisteryBoxes {
+  id           Int         @id @default(autoincrement())
+  name         String
+  price        Float
+  stock        Int
+  restaurantId Int?
+  cartItem     CartItem[]
+  restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+}
+
+model Restaurant {
+  id         Int            @id @default(autoincrement())
+  name       String         @unique
+  misteryBox MisteryBoxes[]
+}
+
+model Cart {
+  id         Int        @id @default(autoincrement())
+  userId     Int        @unique
+  totalPrice Float?
+  cartItem   CartItem[]
+  user       User       @relation(fields: [userId], references: [id])
+}
+
+model CartItem {
+  id           Int          @id @default(autoincrement())
+  quantity     Int          @default(1)
+  totalPrice   Float?
+  misteryBoxId Int
+  cartId       Int
+  cart         Cart         @relation(fields: [cartId], references: [id])
+  misteryBox   MisteryBoxes @relation(fields: [misteryBoxId], references: [id])
+}
