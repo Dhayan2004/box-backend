@@ -2,7 +2,7 @@
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
-    "phone" TEXT NOT NULL,
+    "phone" TEXT,
     "family_name" TEXT NOT NULL,
     "given_name" TEXT NOT NULL,
     "picture" TEXT,
@@ -36,7 +36,7 @@ CREATE TABLE "Restaurant" (
 CREATE TABLE "Cart" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
-    "totalPrice" DOUBLE PRECISION NOT NULL,
+    "totalPrice" DOUBLE PRECISION,
 
     CONSTRAINT "Cart_pkey" PRIMARY KEY ("id")
 );
